@@ -1,7 +1,6 @@
 # <img style="float: left; padding-right: 10px; width: 45px" src="https://raw.githubusercontent.com/Harvard-IACS/2018-CS109A/master/content/styles/iacs.png"> CS115: Advanced Practical Data Science 
 
 ## Final Project: DermAID - Skin Cancer Detection
-### Milestone 6
 
 
 **Harvard University, Spring 2023**<br/>
@@ -10,13 +9,13 @@
 
 
 
-**Group 10 - The Survivors**: 
+**Group nickname: The Survivors**: 
 
-* Arash Sarmadi, sen453@g.harvard.edu, arash.sarmadi@gmail.com  
-* Artemio Mendoza, arm399@g.harvard.edu, artexmg@gmail.com  
-* Georg Ziegner, gez048@g.harvard.edu, ziegner@gmail.com  
-* Sahil Sakhuja, sas9159@g.harvard.edu , sahilsakhuja85@gmail.com  
-* Michael Choi, kwc271@g.harvard.edu, michael.kc.choi@gmail.com
+* Arash Sarmadi,   
+* Artemio Mendoza,   
+* Georg Ziegner,   
+* Sahil Sakhuja,   
+* Michael Choi,
 
 
 <hr style="height:2pt">
@@ -494,7 +493,7 @@ We created a separate Kkubernetes update script which is triggered by Github Act
 Note: For better readability of this file, we will only give a short overview of each container below. More details on each container can be found in dedicated README files for each container.
 
 
-> **Note**: The list of containers is collapsed, please, click on <b>Details</b> to expand the list.
+> **Note**: The list of containers is collapsed, please, click on <b>Details</b> to expand it.
 </summary>
 <details> 
 
