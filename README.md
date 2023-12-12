@@ -1,6 +1,7 @@
 # <img style="float: left; padding-right: 10px; width: 45px" src="https://raw.githubusercontent.com/Harvard-IACS/2018-CS109A/master/content/styles/iacs.png"> CS115: Advanced Practical Data Science 
 
 ## Final Project: DermAID - Skin Cancer Detection
+### Milestone 6
 
 
 **Harvard University, Spring 2023**<br/>
@@ -9,38 +10,37 @@
 
 
 
-**Group nickname: The Survivors**: 
+**Authors:** Arash Sarmadi, Artemio Mendoza, Georg Ziegner, Sahil Sakhuja, Michael Choi
 
-* Arash Sarmadi,   
-* Artemio Mendoza,   
-* Georg Ziegner,   
-* Sahil Sakhuja,   
-* Michael Choi,
-
+**Presentation Video:** https://www.youtube.com/watch?v=qHw_RU1XoTY <br/>
+**Blog Post:** https://medium.com/institute-for-applied-computational-science/spotting-survival-689913b43d5e <br/>
 
 <hr style="height:2pt">
 
 Welcome to DermAID —  In today's era where healthcare meets technology, early detection of diseases can be the key to successful treatments. Skin cancer, being one of the most common types of cancer, often goes unnoticed until it reaches a critical stage. Our mission? To aid in the early detection of skin cancer by leveraging the power of deep learning.
-
-DermAID aims to classify eight different types of skin lesions, bridging the gap between consumers and dermatologists. With consumers uploading images for classification and dermatologists labeling them for future dataset enrichment, our tool not only educates regular people but also continues to learn and improve over time.
-
 
 <a id="contents"></a>
 ## Table of Contents
 
 1. [Project Introduction and Organization](#organization)
 2. [Final proposed solution](#solution)
-3. [Deployment with Kubernetes](#scaling)  
-4. [CI/CD using Github Actions](#ci/cd)
-5. [Containers from previous milestones](#containers)
-6. [References](#references)
+    - 2.1 [Scaling using Kubernetes clusters](#scaling)
+    - 2.2 [Deployment Plan](#deployment)
+    - 2.3 [CI/CD using Github Actions](#ci/cd)
+    - 2.4 [Miscellaneous improvements](#miscellaneous)
+3. [Containers from previous milestones](#containers)
+4. [References](#references)
 
 <a id="organization"></a>
-## 1. Introduction and Project organization
+## 1. Introduction and Project Organization
 ### Description
-Develop a web application that can assist in early detection of skin cancer by classifying eight different types of skin lesions through deep learning models. The web application will have 2 types of users:
-1. Consumers: Users who would be interested in finding out what a specific skin lesion is and would be using the app to make inferences on images uploaded by them.
-2. Dermatologists: Users who can view the images uploaded and assign correct labels to the images thereby creating datasets for further model fine-tuning in the future.
+DermAID is a web-based application that allows the multi-label classification of eight different types of skin lesions, ranging from benign lesions like common moles (melanocytic nevi) to malignant types like melanoma. The classification is done using a deep learning based model that was trained with a dataset of more than 25,000 images of skin lesions and corresponding metadata.
+
+Through the primary user interface, users (patients, physicians or dermatologists) can upload their own images of skin lesions along with metadata on the patient’s gender, age and the body part on which the skin lesion occurs. Based on this data, the app will report a classification along with its probability and a saliency map offering additional clues on features in the image that led to the classification.
+
+A secondary user interface can be accessed by medical experts (dermatologists) only and is used to validate the model’s classification of user-provided data. This allows us to detect and address possible drops in performance. At the same time, the model can be re-trained using the expert-labeled data to further improve the model's performance and to expose it to a wider variety of skin types.
+
+![use case scenarios](/images/use_cases.jpg)
 
 
 ### Project Organization
@@ -56,62 +56,12 @@ Project Organization
       ├── .gitignore
       ├── .gitmodules
       ├── images
-      │  ├── 01-get-raw-data.png
-      │  ├── 02-prepricess-data-test.png
-      │  ├── 03-train-model.png
-      │  ├── 04-classify-n-upload.png
-      │  ├── 05-saliency-maps.png
-      │  ├── api_response.jpeg
-      │  ├── api-server.png
-      │  ├── architecture.png
-      │  ├── architecture_2.png
-      │  ├── Base_Model.jpg
-      │  ├── classify_post.png
-      │  ├── cloudrun-prediction.png
-      │  ├── cloudrun-saliency.png
-      │  ├── container4-postman.png
-      │  ├── container5-postman.png
-      │  ├── CPU.png
-      │  ├── DeployedApp.png
-      │  ├── distillation_performance.png
-      │  ├── dockercompose.png
-      │  ├── experiment_tracking_wandb_pg1.png
-      │  ├── experiment_tracking_wandb_pg2.png
-      │  ├── frontend.jpeg
-      │  ├── frontend_2.jpeg
-      │  ├── frontend_3.jpeg
-      │  ├── Frontend_VM_instance.png
-      │  ├── Frontend-v2.png
-      │  ├── GPU.png
-      │  ├── gradcam_post.png
-      │  ├── LabelStudio_CustomTemplate.png
-      │  ├── multi-GPU.png
-      │  ├── pipeline-flowchart.png
-      │  ├── pipeline-flowchart-v2.jpg
-      │  ├── saliency-map_example1.png
-      │  ├── saliency-map_example2.png
-      │  ├── saliency-map_example3.png
-      │  ├── Screenshot_MS3_Container02_DVC-Push.png
-      │  ├── Screenshot_MS3_DVC-TestRun-C2.png
-      │  ├── Screenshot_MS3_DVC-TestRun-C3.png
-      │  ├── TFRecords.png
-      │  ├── vertex-pipeline-running.png
-      │  ├── Vertex_Screenshot_1.png
-      │  ├── Vertex_Screenshot_2.png
-      │  ├── vertexAI-pipeline.png
-      │  ├── VertexAI_01_Piepeline_WithVersioning.png
-      │  ├── VertexAI_02_ShardsCreated.png
-      │  ├── VertexAI_03_Version22Created.png
-      │  ├── VertexAI_04_Version22Fetched.png
-      │  └── WhyLabs_Profiles.png
-      ├── notebooks
-      │  └── ISIC_Db_Initial_EDA.ipynb
-      ├── presentations
-      │  └── 20231026_midterm_presentation.pdf
-      ├── reports
-      │  ├── milestone-2.md
-      │  ├── milestone-3.md
-      │  └── milestone-4.md
+      │  ├── frontend_analyze.png
+      │  ├── frontend_prediction.png
+      │  ├── github_actions.png
+      │  ├── kubernetes_cluster.png
+      │  ├── kubernetes_cluster_ip.png
+      │  └── use_caes.jpg
       └── src
             ├── 01_get_raw_data
             │   ├── .dockerignore
@@ -125,12 +75,12 @@ Project Organization
             ├── 02_preprocess_data
             │   ├── .dockerignore
             │   ├── .gitignore
-            │   ├── preprocess_data.py
             │   ├── docker-shell.bat
             │   ├── docker-shell.sh
             │   ├── Dockerfile
             │   ├── Pipfile
             │   ├── Pipfile.lock
+            │   ├── preprocess_data.py
             │   └── README.md
             ├── 03_train_model
             │   ├── utilities
@@ -140,7 +90,6 @@ Project Organization
             │   │ └── utils.py
             │   ├── .dockerignore
             │   ├── .gitignore
-            │   ├── training.py
             │   ├── docker-shell.bat
             │   ├── docker-shell.sh
             │   ├── Dockerfile
@@ -149,7 +98,8 @@ Project Organization
             │   ├── Pipfile.lock
             │   ├── README.md
             │   ├── run-commands.sh
-            │   └── run-training.sh
+            │   ├── run-training.sh
+            │   └── training.py
             ├── 04_classify_n_upload
             │   ├── data
             │   │ ├── ISIC_0026403.jpg
@@ -158,10 +108,10 @@ Project Organization
             │   │ ├── ISIC_0026531.jpg
             │   │ └── ISIC_0026546.jpg
             │   ├── .gitignore
-            │   ├── mock_app_prediction.py
             │   ├── docker-shell.bat
             │   ├── docker-shell.sh
             │   ├── Dockerfile
+            │   ├── mock_app_prediction.py
             │   ├── README.md
             │   ├── requirements.txt
             │   └── sample_curl.sh
@@ -172,18 +122,20 @@ Project Organization
             │   │ ├── ISIC_0026456.jpg
             │   │ ├── ISIC_0026531.jpg
             │   │ └── ISIC_0026546.jpg
-            │   ├── mock_app_saliency_maps.py
             │   ├── docker-shell.sh
             │   ├── Dockerfile
+            │   ├── mock_app_saliency_maps.py
             │   ├── README.md
             │   ├── requirements.txt
+            │   ├── run-server.sh
             │   └── sample_curl.sh
             ├── 06_labeling
-            │   ├── label_studio.py
             │   ├── docker-compose.yml
             │   ├── docker-shell.bat
             │   ├── docker-shell.sh
             │   ├── Dockerfile
+            │   ├── label_interface_code.txt
+            │   ├── label_studio.py
             │   ├── Pipfile
             │   ├── Pipfile.lock
             │   └── README.md
@@ -212,64 +164,24 @@ Project Organization
             │   │ ├── .gitignore
             │   │ ├── deploy-create-instance.yml
             │   │ ├── deploy-docker-images.yml
+            │   │ ├── deploy-k8s-cluster.yml
+            │   │ ├── deploy-k8s-tic-tac-toe.yml
             │   │ ├── deploy-provision-instance.yml
             │   │ ├── deploy-setup-containers.yml
             │   │ ├── deploy-setup-webserber.yml
+            │   │ ├── deploy-update-k8s-cluster.yml
             │   │ ├── docker-entrypoint.sh
             │   │ ├── docker-shell.bat
             │   │ ├── docker-shell.sh
             │   │ ├── Dockerfile
+            │   │ ├── gitactions-deploy-app.sh
             │   │ └── inventory.yml
             │   ├── frontend-react
-            │   │ ├── conf
-            │   │ │ └── conf.d
-            │   │ │   └── default.conf
-            │   │ ├── public
-            │   │ │ ├── favicon.ico
-            │   │ │ ├── index.html
-            │   │ │ └── manifest.json
-            │   │ ├── src
-            │   │ │ ├── app
-            │   │ │ │  ├── App.css
-            │   │ │ │  ├── App.js
-            │   │ │ │  ├── AppRoutes.js
-            │   │ │ │  └── Theme.js
-            │   │ │ ├── common
-            │   │ │ │  ├── Content
-            │   │ │ │  │ ├── index.js
-            │   │ │ │  │ └── styles.js
-            │   │ │ │  ├── Footer
-            │   │ │ │  │ ├── index.js
-            │   │ │ │  │ └── styles.js
-            │   │ │ │  └── Header
-            │   │ │ │    ├── index.js
-            │   │ │ │    └── styles.js
-            │   │ │ ├── components
-            │   │ │ │  ├── Error
-            │   │ │ │  │ └── 404.js
-            │   │ │ │  └── Home
-            │   │ │ │    ├── index.js
-            │   │ │ │    └── styles.js
-            │   │ │ ├── services
-            │   │ │ │  ├── Common.js
-            │   │ │ │  └── DataService.js
-            │   │ │ ├── index.css
-            │   │ │ └── index.js
-            │   │ ├── .env.development
-            │   │ ├── .env.production
-            │   │ ├── .gitignore
-            │   │ ├── docker-shell.bat
-            │   │ ├── docker-shell.sh
-            │   │ ├── Dockerfile
-            │   │ ├── Dockerfile.dev
-            │   │ ├── nginx.conf
-            │   │ ├── package.json
-            │   │ └── yarn.lock
-            │   ├── frontend-react2
             │   │ ├── images
             │   │ │ ├── app-building-crashcourse.png
             │   │ │ ├── react-01.png
             │   │ │ ├── react-02.png
+            │   │ │ ├── react-03.png
             │   │ │ ├── react-04.png
             │   │ │ ├── react-05.png
             │   │ │ ├── react-06.png
@@ -320,6 +232,21 @@ Project Organization
             │   │ ├── Dockerfile.dev
             │   │ ├── package.json
             │   │ └── yarn.lock
+            │   ├── labeling
+            │   │ ├── docker-volumes
+            │   │ │ ├── label-studio
+            │   │ │ │  ├── export
+            │   │ │ │  │ ├── project-1-at-2023-11-19-08-22-cc80338d.json
+            │   │ │ │  │ └── project-1-at-2023-11-19-08-22-cc80338d-info.json
+            │   │ │ │  ├── media
+            │   │ │ │  │ └── upload
+            │   │ │ │  │   └── 2
+            │   │ │ │  │     ├── 3cbebb7e-image_test.json
+            │   │ │ │  │     └── caa08a73-image_test.json
+            │   │ │ │  └── label_studio.sqlite3
+            │   │ ├── Dockerfile
+            │   │ ├── image_test.json
+            │   │ └── label_interface_code.txt
             │   └── README.md
             ├── 08_versioning
             │   ├── .dvc
@@ -330,32 +257,31 @@ Project Organization
             │   ├── Check_Version_Download.ipynb
             │   ├── cli.py
             │   ├── cli_old.py
-            │   ├── dermaid_uploads.dvc
             │   ├── docker-shell.sh
             │   ├── Dockerfile
+            │   ├── dvc_push.sh
             │   ├── Pipfile
             │   ├── Pipfile.lock
             │   ├── README.md
-            │   ├── Versioning.dvc
-            │   ├── dvc_push.sh
-            │   └── run-commands.sh
+            │   ├── run-commands.sh
+            │   └── Versioning.dvc
             └── 09_run_kfp
-                ├── .dockerinore
-                ├── .gitignore
-                ├── run-kfp.py
-                ├── docker-entrypoint.sh
-                ├── docker-shell.bat
-                ├── docker-shell.sh
-                ├── Dockerfile
-                ├── Pipfile
-                ├── Pipfile.lock
-                └── README.md
+                ├── .dockerinore
+                ├── .gitignore
+                ├── docker-entrypoint.sh
+                ├── docker-shell.bat
+                ├── docker-shell.sh
+                ├── Dockerfile
+                ├── Pipfile
+                ├── Pipfile.lock
+                ├── README.md
+                └── run-kfp.py
 </details>
 
 
 
 <a id="solution"></a>
-## 2. Final Proposed Solution
+## 2. Proposed Solution
 [Return to Table of Contents](#contents)`
 
 In the previous milestones we  developed our solution in a series of cumulative steps, including:
@@ -364,39 +290,33 @@ In the previous milestones we  developed our solution in a series of cumulative 
     - trained our predictive model
     - deployed the model to GCP
     - created a backend API server to access the deployed model
-    - developed a front end using react
+    - developed a frontend using React
     - automatic deployment to GCP using Ansible
 
-the final steps to make our application deployable and available, were to ensure scalability using Kubernetes clusters, and CI/CD capabilities.
+The final steps to make our application available and deployable were to ensure scalability using Kubernetes clusters and to develop a deployment plan, incl. CI/CD capabilities.
 
 In the following sections we describe the steps to implement the application, either in GCP or locally (option listed in Container *07_frontend/deployment*).
 
-<a id="miscellaneous"></a>
-### 2.1 Miscellaneous improvements
-[Return to Table of Contents](#contents)
-
-For our final version, we improved the UI app to:
-
-- allows the users to enter relevant metadata for the prediction
-- return saliency map of the predicted image
-- include a link for the panel of experts to review the prediction
-
 <a id="scaling"></a>
-## 3. Scaling using Kubernete clusters
+### 2.1. Scaling using Kubernetes clusters
 [Return to Table of Contents](#contents)
 
 To optimize accessibility and performance, our model uses Kubernetes clusters to deploy the API backend and our WebApp frontend.
 
 The architecture focuses on scalability, enabling handling of increased requests without performance loss. It also incorporates failover mechanisms for continuous operation and load balancing to evenly distribute computational load, preventing bottlenecks. 
 
-The deployment is managed from a docker container.**With the help of Ansible Playbook scripts**, we can manage creating and updating the K8 clusters.
+<a id="deployment"></a>
+### 2.2. Deployment Plan
+[Return to Table of Contents](#contents)
 
-In the following section we list the steps to deploy DermAID to a K8s cluster on GCP.
+The deployment is managed from within a docker container. **With the help of Ansible Playbook scripts**, we can manage creating and updating the K8 clusters.
+
+In the following section we list the steps to deploy DermAID to a K8s cluster on GCP. For instructions on how to deploy locally, click [here](src/07_frontend/README.md).
 
 <a id="step1"></a>
 
-### 3.1 Step 1 - enable GCP APIs
-We need to enable all the APIs in GCP that are needed for K8. For that, search for each of these in the GCP search bar and click enable to enable these API's
+#### Step 1 - Enable APIs in GCP
+As a first step, make sure all required APIs are enabled in GCP. To do that, search for each of the following APIs in the GCP search bar, click the API to open a page with more information about the API, and then click **Enable**.
 
 * Compute Engine API
 * Service Usage API
@@ -406,87 +326,131 @@ We need to enable all the APIs in GCP that are needed for K8. For that, search f
 
 <a id="step2"></a>
 
-### 3.2 Step 2 - Start Deployment Docker Container
+#### Step 2 - Start Deployment Docker Container
 
-We need to start the docker container with the image for creating the K8 clusters. For that:
+Start the Docker container with the image for creating the K8 clusters. To do that:
 
--  change directory to deployment by
+-  change directory to **deployment**
 
     ```bash
     cd deployment
     ```
 - start docker container   
-    unix:
+    Unix:
     ```bash
     sh docker-shell.sh
     ```
     
-    windows   
+    Windows:
 
     ```batch
     docker-shell.bat
     ```
 
-- Check versions of tools
+- Check the tool versions
     ```bash 
     gcloud --version
     kubectl version
     kubectl version --client
     ```
 
-- Check if make sure you are authenticated to GCP
+- Ensure you are authenticated to GCP
     ```bash
     gcloud auth list
     ```
 
 <a id="step3"></a>
 
-### 3.3 Step 3 - Create & Deploy Cluster
+#### Step 3 - Build & Deploy Containers
+
+*Not required if already done.*
+
+The relevant containers for the frontend (User frontend based on React & label studio) and the backend API service must be built and deployed to Google Container Registry before deploying a full Kubernetes cluster.
+
+This can be simply achieved by running the following command.
+
+```
+ansible-playbook deploy-setup-containers.yml -i inventory.yml
+```
+
+
+<a id="step4"></a>
+
+#### Step 4 - Create & Deploy Cluster
+
+Run the following command ro create and deploy your K8 cluster:
 
 ```
 ansible-playbook deploy-k8s-cluster.yml -i inventory.yml --extra-vars cluster_state=present
 ```
-Below we can observe our K8 cluster named *dermaid-app-cluster* created in GPC, as well as the external EndePoint IP
+Below we can observe our K8 cluster named *dermaid-app-cluster* created in GPC, as well as the external EndPoint IP
 
-![k8 cluster](./images/kubernetes_cluster.png)
-![kubernetes ingress IP](./images/kubernetes_cluster_ip.png)
+![k8 cluster](/images/kubernetes_cluster.png)
+![kubernetes ingress IP](/images/kubernetes_cluster_ip.png)
 
 
-#### View the App
-* Copy the `nginx_ingress_ip` from the terminal from the create cluster command
-* Go to `http://<YOUR INGRESS IP>.sslip.io`
+<a id="step5"></a>
+
+#### Step 5 - View and access the application
+* Copy the `nginx_ingress_ip` that will be displayed after successfully creating the K8 cluster.
+* Open `http://<YOUR INGRESS IP>.sslip.io` in your web browser.
 
         **Note**: Using sslip.io in conjunction with your ingress IP address in Kubernetes on GCP (Google Cloud Platform) is a method to simplify the process of mapping a public IP address to a domain name, particularly when you don't own a domain or don't want to configure DNS settings for a small project or a temporary environment.
 
-Now, we can observe the landing page of the application, deployed on GCP. Then, we can analize a sample from the image database
+Now we can observe the landing page of the application deployed on GCP. We can then analize a sample from the image database...
 
-![webapp analizing](./images/frontend_analyze.png)
+![webapp analizing](/images/frontend_analyze.png)
 
-And, finally, obtain a prediction
+...and obtain a prediction.
 
-![webapp prediction](./images/frontend_prediction.png)
+![webapp prediction](/images/frontend_prediction.png)
+
+<a id="step6"></a>
+
+#### Step 6 - View and access Label Studio application
+* Copy the `nginx_ingress_ip` that will be displayed after successfully creating the K8 cluster.
+* Open `http://<YOUR INGRESS IP>.sslip.io/labeling/` in your web browser.
 
 
-#### Delete Cluster
+<a id="step7"></a>
+
+#### Step 7 - Delete Cluster
+
+To delete the K8 cluster, run:
 ```bash
 ansible-playbook deploy-k8s-cluster.yml -i inventory.yml --extra-vars cluster_state=absent
 ```
 
 <a id="ci/cd"></a>
-## 4. CI/CD with Github Actions
+### 2.3. CI/CD using Github Actions
 [Return to Table of Contents](#contents)
 
 After deploying a Kubernetes cluster, our last task was to implement CI/CD automation through Github Actions. 
 
-We created a separate Kkubernetes update script which is triggered by Github Actions when the commit message contains “/run-app-deploy". This automatically rebuilds the 3 containers (frontend, api-service and labeling), publishes them to Google Container Registry and updates the deployment of these containers on the Kubernetes Cluster.
+We created a separate Kubernetes update script which is triggered by Github Actions when the commit message contains “/run-app-deploy". This automatically rebuilds the 3 containers (frontend, api-service and labeling), publishes them to Google Container Registry and updates the deployment of these containers on the Kubernetes Cluster.
 
-![github actions](./images/github_actions.png)
+![github actions](/images/github_actions.png)
+
+There are 2 actions taken in the CI/CD pipeline:
+1. Build and deploy new containers with any code changes that have been made in the application - this is done using the same ansible command as above for deploying the containers.
+1. Update the K8s cluster on GCP - this is done using a different ansible yml file (deploy-update-k8s-cluster.yml) which only updates the containers on the cluster and does not change any of the cluster setup.
+
+<a id="miscellaneous"></a>
+### 2.4 Miscellaneous improvements
+[Return to Table of Contents](#contents)
+
+For our final version, we further improved the primary user interface to:
+
+- allow users to enter relevant metadata for the prediction
+- return saliency map of the image classification
+- include a link for the medical experts to review the classification 
+
 
 ---
 <a id="containers"></a>
 <summary>
 
-## 5. Containers from previous Milestones
+## 3. Containers from previous Milestones
   
 [Return to Table of Contents](#contents)
 
@@ -597,7 +561,7 @@ It assumes containers it used in the pipeline to have already been uploaded to a
 </details>
 
 <a id="references"></a>
-## 6. References
+## 4. References
 [Return to Table of Contents](#contents)
 
 1. : BCN_20000 Dataset: (c) Department of Dermatology, Hospital Clínic de Barcelona  
