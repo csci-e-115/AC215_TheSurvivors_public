@@ -13,7 +13,7 @@
 **Authors:** Arash Sarmadi, Artemio Mendoza, Georg Ziegner, Sahil Sakhuja, Michael Choi
 
 **Presentation Video:** https://www.youtube.com/watch?v=qHw_RU1XoTY <br/>
-**Blog Post:** https://medium.com/institute-for-applied-computational-science/spotting-survival-689913b43d5e <br/>
+**Blog Post:** https://medium.com/@ziegner/spotting-survival-689913b43d5e <br/>
 
 <hr style="height:2pt">
 
