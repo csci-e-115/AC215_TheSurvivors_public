@@ -1,0 +1,13 @@
+secrets/*
+.DS_Store
+trained_model.zip
+junk.py
+data/*
+launch.json
+wandb/*
+dataset_paths/
+/dataset_paths
+git.env
+utilities/__pycache__/*
+Versioning/
+.dvc/

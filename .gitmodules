@@ -1,0 +1,3 @@
+[submodule "src/08_versioning"]
+	path = src/08_versioning
+	url = https://github.com/csci-e-115/dermaid-versioning

@@ -1,0 +1,36 @@
+version: "3.7"
+networks:
+    default:
+        name: dermaid-data-labeling-network
+        external: true
+services:
+    06-dermaid-data-label-cli:
+        image: 06-dermaid-data-label-cli
+        container_name: 06-dermaid-data-label-cli
+        volumes:
+            - ../secrets:/secrets
+            - ../06_labeling:/app
+        environment:
+            GOOGLE_APPLICATION_CREDENTIALS: /secrets/dermaid.json
+            GCP_PROJECT: "amg-sandbox-115"
+            GCP_ZONE: "us-central1-a"
+            GCS_BUCKET_NAME: "dermaid_bucket_amg"
+            LABEL_STUDIO_URL: "http://06-dermaid-data-label-studio:8080"
+        depends_on:
+            - 06-dermaid-data-label-studio
+    06-dermaid-data-label-studio:
+        image: heartexlabs/label-studio:latest
+        container_name: 06-dermaid-data-label-studio
+        ports:
+            - 8080:8080
+        user: root
+        volumes:
+            - ../06_labeling/docker-volumes/label-studio:/label-studio/data
+            - ../secrets:/secrets
+        environment:
+            LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK: "true"
+            LABEL_STUDIO_USERNAME: "artexmg@gmail.com"
+            LABEL_STUDIO_PASSWORD: "secure"
+            GOOGLE_APPLICATION_CREDENTIALS: /secrets/ac215-dermaid.json
+            GCP_PROJECT: "amg-sandbox-115"
+            GCP_ZONE: "us-central1-a"            

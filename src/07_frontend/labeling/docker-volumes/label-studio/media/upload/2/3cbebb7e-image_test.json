@@ -1,0 +1,13 @@
+[
+    {
+        "data": {
+            "image_url": "https://storage.cloud.google.com/ac215-dermaid/raw_images/ISIC_0000000.jpg",
+            "user_age": 24,
+            "user_gender": "male",
+            "ref_id": "1234",
+            "meta_info": {
+                "timestamp": "2020-03-09 18:15:28.212882"
+            }
+        }
+    }
+]

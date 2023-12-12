@@ -1,0 +1,10 @@
+# fastapi["all"]
+fastapi==0.68.1
+uvicorn==0.15.0
+gunicorn==21.2.0
+google-cloud-storage
+python-multipart
+pandas
+pillow
+matplotlib
+tf-keras-vis

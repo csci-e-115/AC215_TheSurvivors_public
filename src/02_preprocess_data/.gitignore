@@ -1,0 +1,4 @@
+secrets/*
+.DS_Store
+/dataset_paths
+git.env

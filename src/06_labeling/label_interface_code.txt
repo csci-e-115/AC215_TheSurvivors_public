@@ -1,0 +1,11 @@
+<View>
+  <Image name="image" value="$image_url" />
+  <Header value="Metadata" />
+  <Text name="Age" value="Age: $user_age" />
+  <Text name="Gender" value="Gender: $user_gender" />
+  <Header value="Select Label:" />
+  <Choices name="choice" toName="image" choice="single-radio">
+    <Choice value="MEL"/>
+    <Choice value="NA"/>
+  </Choices>
+</View>

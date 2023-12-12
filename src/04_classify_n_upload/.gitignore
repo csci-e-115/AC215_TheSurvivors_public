@@ -1,0 +1,8 @@
+secrets/*
+models/*
+.DS_Store
+junk.py
+# data/*
+unlabelled_metadata/*
+unlabelled_preproc_images/*
+unlabelled_raw_images/*

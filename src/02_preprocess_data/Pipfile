@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+google-cloud-storage = "*"
+pandas = "*"
+tensorflow = "*"
+scikit-learn = "*"
+tqdm = "*"
+whylogs = "*"
+Pillow = "*"
+
+[requires]
+python_version = "3.8"
